@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="/Users/daniellarafla/Documents/DSI/sql/05_src/sql/farmersmarket.db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="7306"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><table title="product" custom_title="0" dock_id="2" table="4,7:mainproduct"/><dock_state state="000000ff00000000fd00000001000000020000042b0000032dfc0100000002fb000000160064006f0063006b00420072006f007700730065003101000000000000015c0000000000000000fb000000160064006f0063006b00420072006f007700730065003201000000000000042b0000010f00ffffff000002d90000000000000004000000040000000800000008fc00000000"/><default_encoding codec=""/><browse_table_settings><table schema="main" name="booth" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_" freeze_columns="0"><sort/><column_widths><column index="1" value="104"/><column index="2" value="125"/><column index="3" value="300"/><column index="4" value="83"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="customer" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_" freeze_columns="0"><sort/><column_widths><column index="1" value="89"/><column index="2" value="147"/><column index="3" value="145"/><column index="4" value="158"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="customer_purchases" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_" freeze_columns="0"><sort/><column_widths><column index="1" value="80"/><column index="2" value="73"/><column index="3" value="91"/><column index="4" value="91"/><column index="5" value="62"/><column index="6" value="127"/><column index="7" value="119"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="product" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_" freeze_columns="0"><sort><column index="0" mode="0"/></sort><column_widths><column index="1" value="80"/><column index="2" value="206"/><column index="3" value="93"/><column index="4" value="145"/><column index="5" value="124"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table></browse_table_settings></tab_browse><tab_sql><sql name="SQL 1*">SELECT 
+			market_date, 
+			DATE(market_date, 'start of month') AS month_beginning, 
+			DATE(market_date, 'start of month', '+1 day') AS month_second_day, 
+			DATE(market_date, 'start of month', '+1 day', '-1 day') AS month_start, 
+			DATE(market_date, 'start of month', '+7 days') AS a_week_later
+FROM market_date_info;
+
+SELECT julianday('2026-10-30') - julianday('2026-10-31');
+
+SELECT
+		product_id,
+		coalesce(product_size,  product_qty_type, 'unknown') AS product_size_clean
+FROM product;
+
+SELECT
+			vendor_id, 
+			SUM(quantity*cost_per_quantity)/NULLIF(quantity,0) AS average_price_per_unit
+FROM customer_purchases;
+
+
+-- SELECT
+-- 			vendor_id, 
+-- 			customer_id,
+-- 			quantity, 
+-- 			cost_per_quantity,
+-- 			quantity*cost_per_quantity AS payment_mount, 
+-- 			ROW_NUMBER() OVER (PARTITION BY vendor_id ORDER BY quantity*cost_per_quantity DESC) AS payment_row_num;
+-- -- 			RANK() OVER (PARTITION BY vendor_id ORDER BY quantity*cost_per_quantity DESC,) AS payment_ranking;
+
+SELECT
+			market_date,
+			-- lag for previous date, lead for next one
+			LAG(market_date) OVER (ORDER BY market_date) AS previous_date
+FROM customer_purchases;
+
+SELECT 
+			product_id,  
+			NTILE(4) OVER (ORDER BY product_id) AS quantile_no
+			</sql><current_tab id="0"/></tab_sql></sqlb_project>

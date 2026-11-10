@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="farmersmarket.db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="7306"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="5" parent="0"/><expanded_item id="6" parent="0"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><table title="booth" custom_title="0" dock_id="2" table="4,5:mainbooth"/><dock_state state="000000ff00000000fd0000000100000002000003560000032dfc0100000002fb000000160064006f0063006b00420072006f00770073006500310100000000000003560000000000000000fb000000160064006f0063006b00420072006f00770073006500320100000000ffffffff0000010100ffffff0000027e0000000000000004000000040000000800000008fc00000000"/><default_encoding codec=""/><browse_table_settings/></tab_browse><tab_sql><sql name="SQL 1*">SELECT 
+	p.product_id, 
+	p.product_name, 
+	--p.product_category_id, 
+	pc.product_category_name
+FROM product AS p
+INNER JOIN product_category AS pc
+ON p.product_category_id = pc.product_category_id;
+
+SELECT 
+		v.vendor_id, 
+		v.vendor_name, 
+		vi.market_date, 
+		vi.product_id
+FROM vendor AS v
+LEFT  JOIN vendor_inventory AS vi
+ON v.vendor_id = vi.vendor_id
+ORDER BY v.vendor_id;
+
+SELECT 
+		v.vendor_name, 
+		p.product_name, 
+		vi.market_date, 
+		vi.original_price
+FROM vendor AS v
+INNER JOIN vendor_inventory AS vi
+ON v.vendor_id = vi.vendor_id
+INNER JOIN product AS p
+ON p.product_id = vi.product_id;
+
+SELECT  vendor_id,
+				SUM (quantity * cost_per_quantity) AS total_sales,
+				AVG (quantity * cost_per_quantity) AS avg_sales,
+				(SUM(quantity * cost_per_quantity)/COUNT(quantity)) AS mean_sales -- does not exclude null values
+FROM customer_purchases
+GROUP BY vendor_id
+ORDER BY avg_sales DESC;
+
+SELECT COUNT (*) from customer; -- displays number of columns
+
+
+SELECT vendor_id, SUM(quantity*cost_per_quantity) AS vendor_sales
+FROM customer_purchases
+GROUP BY vendor_id
+HAVING SUM(quantity*cost_per_quantity) &gt; 
+SELECT AVG(total_sales) AS mean_vendor_sales
+FROM
+
+SELECT AVG(total_sales) AS mean_vendor_sales
+FROM 
+(
+SELECT vendor_id, SUM(quantity*cost_per_quantity) AS total_sales
+FROM customer_purchases
+GROUP BY vendor_id);
+
+
+CREATE TEMP TABLE vendor_sales AS
+SELECT vendor_id, COUNT(*) AS row_number, 
+			(quantity*cost_per_quantity) AS sales
+FROM customer_purchases
+GROUP BY vendor_id;
+SELECT * FROM vendor_sales;
+
+SELECT vendor_id, SUM(quantity) AS sales_quantity
+FROM customer_purchases
+GROUP BY vendor_id
+HAVING sales_quantity &gt;= 3000;
+
+WITH vendor_totals AS(
+				SELECT vendor_id, SUM(quantity) AS sales_quantity
+				FROM customer_purchases
+				GROUP BY vendor_id)
+SELECT * FROM vendor_totals
+WHERE sales_quantity &gt;= 3000;
+
+
+
+
+				 
+</sql><current_tab id="0"/></tab_sql></sqlb_project>

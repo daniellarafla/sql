@@ -106,8 +106,8 @@ Please do not pick the exact same tables that I have already diagrammed. For exa
 	- <img src="./images/01_farmers_market_conceptual_model.png" width="600">
 - The column names can be found in a few spots (DB Schema window in the bottom right, the Database Structure tab in the main window by expanding each table entry, at the top of the Browse Data tab in the main window)
 
+![alt text](image-1.png)
 ***
-
 ## Section 2:
 You can start this section following *session 2*.
 
@@ -209,5 +209,19 @@ Consider, for example, concepts of fariness, inequality, social structures, marg
 
 
 ```
-Your thoughts...
+Data bases generated or run by the government or private consumer reporting agencies have 
+become indispensable for decisions that greatly affect our lives, like whether we get approved for a loan,
+or an insurance policy. Many of the algorithms that use these databases to output
+decisions take into consideration factors that can be proxies for race or socioeconomic status, thus
+penalizing already disadvantaged populations. For example, the risk of recidivism affects how a person 
+is treated in the criminal justice system, and it is assessed by relying on factors highly correlated
+with race, such as residential zip code, long-term unemployment, unstable housing, and low 
+educational attainment. This ends up putting certain populations at an even greater 
+disatvantage and sows inequality in the system, such that two people who committed the same crime can
+be given two different recidivism scores based on proxies of race, which in turn affects the duration of 
+their prison sentence among other serious life-altering decisions. Because what we choose to include 
+in our databases ends up determining some of the most important outcomes in our lives, we should
+carefully consider proxies for race, socioeconomic status and other group identity categories when
+designing our data systems. 
+
 ```
